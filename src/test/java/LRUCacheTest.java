@@ -76,5 +76,23 @@ public class LRUCacheTest {
 
     System.out.println(intCache);
     assertNotNull(intCache.get(2));
+
+    intCache = new LRUCache<>(2);
+
+    intCache.put(2, 1);
+    System.out.println(intCache);
+    intCache.put(2, 2);
+    System.out.println(intCache);
+
+    assertEquals(java.util.Optional.of(2), java.util.Optional.of(intCache.get(2)));
+    System.out.println(intCache);
+
+    intCache.put(1, 1);
+    System.out.println(intCache);
+    intCache.put(4, 1);
+    System.out.println(intCache);
+
+    assertNull(intCache.get(2));
+
   }
 }

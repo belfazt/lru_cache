@@ -34,22 +34,19 @@ public class LRUCache<K, V> {
   public void put(K key, V value) {
     Node<K, V> node = new Node<>(key, value);
     if (this.map.containsKey(key)) {
-      if (key != this.list.getHead().getKey()) {
-        Node<K, V> tempNode = this.map.remove(key);
-        tempNode.getPrev().setNext(tempNode.getNext());
-        this.map.put(key, node);
-        this.list.prepend(node);
+      if (key == this.list.getHead().getKey()) {
+        this.map.remove(this.list.removeHead().getKey());
+      } else {
+        this.map.get(key).getPrev().setNext(this.map.remove(key).getNext());
       }
-    } else {
-      this.map.put(key, node);
-      this.list.prepend(node);
     }
+
+    this.map.put(key, node);
+    this.list.prepend(node);
 
     if (this.map.size() > this.capacity) {
-      this.map.remove(this.list.getTail().getKey());
-      this.list.removeTail();
+      this.map.remove(this.list.removeTail().getKey());
     }
-
   }
 
   public String toString() {

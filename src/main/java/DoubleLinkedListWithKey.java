@@ -28,7 +28,7 @@ public class DoubleLinkedListWithKey<K, V> {
       return null;
     }
 
-    Node<K, V> oldHead = this.head;
+    Node<K, V> oldHead = this.getHead();
 
     this.head = this.head.getNext();
     if (this.head != null) {
@@ -45,7 +45,7 @@ public class DoubleLinkedListWithKey<K, V> {
 
     Node<K, V> oldTail = this.getTail();
 
-    Node<K, V> newTail = this.getTail().getPrev();
+    Node<K, V> newTail = oldTail.getPrev();
 
     this.setTail(newTail);
 
@@ -57,10 +57,20 @@ public class DoubleLinkedListWithKey<K, V> {
   }
 
   public Node<K, V> getHead() {
+    if (this.head != null) {
+      while (this.head.getPrev() != null) {
+        this.head = this.head.getPrev();
+      }
+    }
+
     return head;
   }
 
   public Node<K, V> getTail() {
+    if (this.tail != null) {
+      return this.tail;
+    }
+
     while (this.tail.getNext() != null) {
       this.tail = this.tail.getNext();
     }
@@ -76,7 +86,7 @@ public class DoubleLinkedListWithKey<K, V> {
     StringBuilder sb = new StringBuilder();
     sb.append(super.toString()).append(" [");
     sb.append("null");
-    Node current = this.head;
+    Node current = this.getHead();
     while (current != null) {
       sb.append(" <-> ").append(current);
       current = current.getNext();
