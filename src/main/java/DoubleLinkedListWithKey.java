@@ -1,26 +1,20 @@
 public class DoubleLinkedListWithKey<K, V> {
-  private int size;
   private Node<K, V> head;
   private Node<K, V> tail;
 
-  public DoubleLinkedListWithKey() {
-    this.size = 0;
-  }
-
   public void append(Node<K, V> node) {
-    if (this.size == 0) {
+    if (this.head == null) {
       this.head = node;
       this.tail = node;
     } else {
-      node.setPrev(this.tail);
-      this.tail.setNext(node);
-      this.tail = node;
+      node.setPrev(this.getTail());
+      this.getTail().setNext(node);
+      this.setTail(node);
     }
-    this.size++;
   }
 
   public void prepend(Node<K, V> node) {
-    if (this.size == 0) {
+    if (this.head == null) {
       append(node);
     } else {
       node.setNext(this.head);
@@ -30,7 +24,7 @@ public class DoubleLinkedListWithKey<K, V> {
   }
 
   public Node<K, V> removeHead() {
-    if (size == 0) {
+    if (this.head == null) {
       return null;
     }
 
@@ -45,15 +39,18 @@ public class DoubleLinkedListWithKey<K, V> {
   }
 
   public Node<K, V> removeTail() {
-    if (size == 0) {
+    if (this.head == null) {
       return null;
     }
 
-    Node<K, V> oldTail = this.tail;
+    Node<K, V> oldTail = this.getTail();
 
-    this.tail = this.tail.getPrev();
-    if (this.tail != null) {
-      this.tail.setNext(null);
+    Node<K, V> newTail = this.getTail().getPrev();
+
+    this.setTail(newTail);
+
+    if (newTail != null) {
+      newTail.setNext(null);
     }
 
     return oldTail;
@@ -64,14 +61,20 @@ public class DoubleLinkedListWithKey<K, V> {
   }
 
   public Node<K, V> getTail() {
-    return tail;
+    while (this.tail.getNext() != null) {
+      this.tail = this.tail.getNext();
+    }
+    return this.tail;
+  }
+
+  public void setTail(Node<K, V> node) {
+    getTail();
+    this.tail = node;
   }
 
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append(super.toString()).append(" [");
-    sb.append(this.size).append(" Elements");
-    sb.append("(");
     sb.append("null");
     Node current = this.head;
     while (current != null) {
@@ -79,7 +82,6 @@ public class DoubleLinkedListWithKey<K, V> {
       current = current.getNext();
     }
     sb.append(" <-> null");
-    sb.append(")");
     sb.append("]");
 
     return sb.toString();

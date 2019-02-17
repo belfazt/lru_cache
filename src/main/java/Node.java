@@ -19,7 +19,7 @@ public class Node<K, V> {
     return value;
   }
 
-  public Node getPrev() {
+  public Node<K, V> getPrev() {
     return prev;
   }
 
@@ -27,7 +27,7 @@ public class Node<K, V> {
     this.prev = prev;
   }
 
-  public Node getNext() {
+  public Node<K, V> getNext() {
     return next;
   }
 
